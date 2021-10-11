@@ -1,7 +1,9 @@
 use crate::hittables::Hittable;
-use crate::util::Bounds3;
+use crate::ray::Hit;
+use crate::util::{Bounds3, Color3};
 use nalgebra::{Point3, Vector3};
 
+#[derive(Debug, Clone)]
 pub struct Repeat<X: Hittable> {
     pub hittable: X,
     pub repetition: Vector3<f64>,
@@ -18,6 +20,10 @@ impl<X: Hittable> Hittable for Repeat<X> {
         let q = Point3::from(z - c.scale(0.5));
 
         self.hittable.sdf(q)
+    }
+
+    fn material(&self, hit: &Hit) -> Color3 {
+        self.hittable.material(hit)
     }
 
     fn bounds(&self) -> Bounds3 {

@@ -1,5 +1,6 @@
 use crate::hittables::Hittable;
-use crate::util::Bounds3;
+use crate::ray::Hit;
+use crate::util::{Bounds3, Color3};
 use nalgebra::{point, Point3};
 
 #[derive(Clone, Copy, Debug)]
@@ -12,6 +13,7 @@ pub enum Axis {
     XYZ,
 }
 
+#[derive(Debug, Clone)]
 pub struct Mirrored<X: Hittable> {
     pub hittable: X,
     pub axis: Axis,
@@ -29,6 +31,10 @@ impl<X: Hittable> Hittable for Mirrored<X> {
             Axis::XYZ => point![p.x.abs(), p.y.abs(), p.z.abs()],
         };
         self.hittable.sdf(sample)
+    }
+
+    fn material(&self, hit: &Hit) -> Color3 {
+        self.hittable.material(hit)
     }
 
     fn bounds(&self) -> Bounds3 {

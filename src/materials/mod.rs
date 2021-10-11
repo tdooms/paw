@@ -1,5 +1,7 @@
 mod base;
-mod lambertian;
+mod checkered;
+mod color;
 
 pub use base::Material;
-pub use lambertian::*;
+pub use checkered::Checkered;
+pub use color::Color;

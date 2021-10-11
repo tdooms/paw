@@ -1,13 +1,12 @@
-use std::fs::{read_to_string, File};
+use std::fs::read_to_string;
 use std::path::Path;
-use std::rc::Rc;
 
-use nalgebra::{point, Point3, UnitVector3, Vector, Vector3};
-use serde::de::DeserializeOwned;
+use nalgebra::{point, Point3, UnitVector3, Vector3};
 use serde::Deserialize;
 
-use crate::hittables::Hittable;
-use crate::lights::Light;
+use crate::hittables::{Hittable, Scene};
+use crate::lights::{Light, PointLight};
+use crate::util::World;
 
 // When casting a ray, do not start at 0 to avoid colliding with the object itself
 fn start_eps() -> f64 {
@@ -45,7 +44,7 @@ fn height() -> u32 {
 }
 
 fn look_from() -> Point3<f64> {
-    point![1.0, 1.0, -1.0]
+    point![2.0, 2.0, -2.0]
 }
 
 fn look_at() -> Point3<f64> {
@@ -59,9 +58,6 @@ fn up() -> UnitVector3<f64> {
 fn fov() -> f64 {
     std::f64::consts::FRAC_PI_2
 }
-
-trait HittableOwned = Hittable + DeserializeOwned;
-trait LightOwned = Light + DeserializeOwned;
 
 #[derive(Clone, Copy, Debug, Deserialize)]
 pub struct Settings {
@@ -106,20 +102,43 @@ pub struct FilmParams {
     pub height: u32,
 }
 
-#[derive(Deserialize)]
+// #[derive(Deserialize)]
 pub struct Config {
     pub settings: Settings,
     pub camera: CameraParams,
     pub film: FilmParams,
 
-    #[serde(default = "crate::scene::create_world")]
-    pub world: Box<dyn HittableOwned>,
+    // #[serde(default = "crate::scene::create_world")]
+    pub world: World,
 
-    #[serde(default = "crate::scene::create_lights")]
-    pub lights: Vec<Box<dyn LightOwned>>,
+    // #[serde(default = "crate::scene::create_lights")]
+    pub lights: Vec<PointLight>,
 }
 
 pub fn parse_config(path: impl AsRef<Path>) -> Result<Config, Box<dyn std::error::Error>> {
-    let result = serde_json::from_str(&read_to_string(path)?)?;
-    Ok(result)
+    // let result = serde_json::from_str(&read_to_string(path)?)?;
+    // Ok(result)
+
+    let config = Config {
+        settings: Settings {
+            start_eps: start_eps(),
+            hit_eps: hit_eps(),
+            normal_eps: normal_eps(),
+            max_t: max_t(),
+            max_steps: max_steps(),
+        },
+        camera: CameraParams {
+            look_from: look_from(),
+            look_at: look_at(),
+            up: up(),
+            fov: fov(),
+        },
+        film: FilmParams {
+            width: width(),
+            height: height(),
+        },
+        world: Box::new(crate::scene::create_world()),
+        lights: crate::scene::create_lights(),
+    };
+    Ok(config)
 }

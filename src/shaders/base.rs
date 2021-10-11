@@ -1,14 +1,15 @@
 use nalgebra::{Point3, Vector3};
 
 use crate::hittables::Hittable;
-use crate::lights::Light;
+use crate::lights::{Light, PointLight};
+use crate::ray::Hit;
 
 pub trait Shader {
     fn shade(
         &self,
-        surface: Point3<f64>,
+        hit: &Hit,
         eye: Point3<f64>,
-        lights: &[Box<dyn Light>],
+        lights: &[PointLight],
         world: &impl Hittable,
     ) -> Vector3<f64>;
 }

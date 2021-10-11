@@ -2,7 +2,14 @@ use crate::config::Settings;
 use nalgebra::{Point3, Unit, UnitVector3, Vector3};
 
 use crate::hittables::Hittable;
-use crate::util::World;
+use crate::util::{tetrahedron_normal, World};
+
+#[derive(Debug, Clone, Copy)]
+pub struct Hit {
+    pub depth: f64,
+    pub surface: Point3<f64>,
+    pub normal: UnitVector3<f64>,
+}
 
 #[derive(Debug, Clone, Copy)]
 pub struct Ray {
@@ -22,7 +29,7 @@ impl Ray {
         self.origin + self.direction.scale(t)
     }
 
-    pub fn march(&self, world: &World, settings: &Settings) -> Option<Point3<f64>> {
+    pub fn march(&self, world: &World, eye: Point3<f64>, settings: &Settings) -> Option<Hit> {
         let mut depth = settings.start_eps;
 
         for _ in 0..settings.max_steps {
@@ -30,7 +37,12 @@ impl Ray {
             let dist = world.sdf(location);
 
             if dist < settings.hit_eps {
-                return Some(location);
+                let hit = Hit {
+                    depth,
+                    surface: location,
+                    normal: tetrahedron_normal(eye, location, world),
+                };
+                return Some(hit);
             }
 
             depth += dist;
