@@ -1,6 +1,7 @@
 use std::rc::Rc;
 
-use super::Hittable;
+use crate::hittables::Hittable;
+use crate::util::Bounds3;
 use nalgebra::Point3;
 
 pub struct Scene {
@@ -15,5 +16,10 @@ impl Hittable for Scene {
             .map(|o| o.sdf(sample))
             .min_by(|x, y| x.partial_cmp(y).unwrap())
             .unwrap_or(0.)
+    }
+
+    fn bounds(&self) -> Bounds3 {
+        // TODO: eh
+        Bounds3::infinite()
     }
 }
