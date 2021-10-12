@@ -3,8 +3,9 @@ use nalgebra::Point3;
 use crate::hittables::Hittable;
 use crate::ray::Hit;
 use crate::util::{Bounds3, Color3};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Intersection {
     pub first: Box<dyn Hittable>,
     pub second: Box<dyn Hittable>,
@@ -19,6 +20,7 @@ impl Intersection {
     }
 }
 
+#[typetag::serde(name = "intersection")]
 impl Hittable for Intersection {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         self.first.sdf(sample).max(self.second.sdf(sample))

@@ -1,4 +1,5 @@
 use nalgebra::{vector, Point3, Vector3};
+use serde::{Deserialize, Serialize};
 use std::rc::Rc;
 
 use crate::hittables::Hittable;
@@ -6,7 +7,7 @@ use crate::materials::{Color, Material};
 use crate::ray::Hit;
 use crate::util::{Bounds3, Color3};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Cuboid {
     pub extent: Vector3<f64>,
     pub material: Box<dyn Material>,
@@ -21,6 +22,7 @@ impl Default for Cuboid {
     }
 }
 
+#[typetag::serde(name = "cuboid")]
 impl Hittable for Cuboid {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         let d = sample.coords.abs() - self.extent;

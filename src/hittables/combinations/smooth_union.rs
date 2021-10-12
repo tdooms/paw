@@ -2,8 +2,9 @@ use crate::hittables::Hittable;
 use crate::ray::Hit;
 use crate::util::{Bounds3, Color3};
 use nalgebra::Point3;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct SmoothUnion {
     pub first: Box<dyn Hittable>,
     pub second: Box<dyn Hittable>,
@@ -24,6 +25,7 @@ impl SmoothUnion {
     }
 }
 
+#[typetag::serde(name = "smooth_union")]
 impl Hittable for SmoothUnion {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         let d1 = self.first.sdf(sample);

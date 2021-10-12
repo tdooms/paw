@@ -21,7 +21,7 @@ pub fn naive_normal(
 pub fn tetrahedron_normal(
     eye: Point3<f64>,
     surface: Point3<f64>,
-    world: &impl Hittable,
+    world: &dyn Hittable,
 ) -> UnitVector3<f64> {
     // Scale up the normal polling offset when far away to improve aliasing
     let h = 0.001 * (surface - eye).norm();

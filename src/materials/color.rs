@@ -2,8 +2,9 @@ use crate::materials::Material;
 use crate::ray::Hit;
 use crate::util::Color3;
 use nalgebra::vector;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Color {
     pub color: Color3,
 }
@@ -16,6 +17,7 @@ impl Default for Color {
     }
 }
 
+#[typetag::serde(name = "color")]
 impl Material for Color {
     fn color(&self, _: &Hit) -> Color3 {
         self.color

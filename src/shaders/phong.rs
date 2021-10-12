@@ -1,5 +1,6 @@
 use nalgebra::{vector, Point3, Unit, Vector3};
 
+use crate::config::Settings;
 use crate::hittables::Hittable;
 use crate::lights::{Light, PointLight};
 use crate::ray::{Hit, Ray};
@@ -14,7 +15,8 @@ impl Shader for Phong {
         hit: &Hit,
         eye: Point3<f64>,
         lights: &[PointLight],
-        world: &impl Hittable,
+        world: &dyn Hittable,
+        settings: &Settings,
     ) -> Color3 {
         let ambient = vector![0.2, 0.2, 0.2];
         let diffuse = world.material(hit);
@@ -31,14 +33,17 @@ impl Shader for Phong {
             let ln = light_dir.dot(&hit.normal);
             let re = reflected.dot(&eye_dir);
 
+            let shadow = Ray::closest(hit.surface, light.position, world, settings, light.softness);
+            let light_contrib = light.color.scale(shadow);
+
             color += if ln < 0.0 {
                 Vector3::default()
             } else if re < 0.0 {
-                (light.color.component_mul(&diffuse)).scale(ln)
+                diffuse.scale(ln).component_mul(&light_contrib)
             } else {
-                specular.scale(re.powf(shininess)) + diffuse.scale(ln)
+                (specular.scale(re.powf(shininess)) + diffuse.scale(ln))
+                    .component_mul(&light_contrib)
             }
-            .component_mul(&light.color);
         }
 
         color

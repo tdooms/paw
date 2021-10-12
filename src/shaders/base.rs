@@ -1,3 +1,4 @@
+use crate::config::Settings;
 use nalgebra::{Point3, Vector3};
 
 use crate::hittables::Hittable;
@@ -10,6 +11,7 @@ pub trait Shader {
         hit: &Hit,
         eye: Point3<f64>,
         lights: &[PointLight],
-        world: &impl Hittable,
+        world: &dyn Hittable,
+        settings: &Settings,
     ) -> Vector3<f64>;
 }

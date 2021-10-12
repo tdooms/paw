@@ -3,8 +3,9 @@ use crate::materials::{Color, Material};
 use crate::ray::Hit;
 use crate::util::{Bounds3, Color3};
 use nalgebra::{vector, Point3};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Sphere {
     pub radius: f64,
     pub material: Box<dyn Material>,
@@ -19,6 +20,7 @@ impl Default for Sphere {
     }
 }
 
+#[typetag::serde(name = "sphere")]
 impl Hittable for Sphere {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         sample.coords.norm() - self.radius

@@ -1,3 +1,7 @@
+use std::env::join_paths;
+use std::ops::Deref;
+use std::path::Path;
+
 use bmp::{px, Image, Pixel};
 use nalgebra::{Point3, Vector3};
 
@@ -13,12 +17,19 @@ mod hittables;
 mod lights;
 mod materials;
 mod ray;
-mod scene;
 mod shaders;
 mod util;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let config = parse_config("config.json")?;
+    let args: Vec<String> = std::env::args().collect();
+
+    let path = match args.deref() {
+        [_, path] => Ok(path),
+        [] | [_] => Err("no config path given"),
+        _ => Err("too many parameters, expected one"),
+    }?;
+
+    let config = parse_config(Path::new("scenes").join(path))?;
 
     let CameraParams {
         look_from,
@@ -32,22 +43,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let camera = Camera::new(look_from, look_at, up, fov, aspect_ratio);
     let eye = look_from;
+
     let mut film = Image::new(width, height);
-
     let shader = Phong;
-
-    println!("{:#?}", config.world);
 
     for (x, y) in film.coordinates() {
         let ray = camera.ray(x as f64 / width as f64, y as f64 / height as f64);
 
         let map_hit = |hit: Hit| {
-            let color = shader.shade(&hit, eye, &config.lights, &config.world);
+            let color = shader.shade(
+                &hit,
+                eye,
+                &config.lights,
+                config.world.deref(),
+                &config.settings,
+            );
             let scaled = color.scale(255.99);
             px!(scaled.x, scaled.y, scaled.z)
         };
 
-        let pixel = match ray.march(&config.world, eye, &config.settings) {
+        let pixel = match ray.march(config.world.deref(), eye, &config.settings) {
             None => px!(0, 0, 0),
             Some(surface) => map_hit(surface),
         };

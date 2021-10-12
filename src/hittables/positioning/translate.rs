@@ -2,14 +2,16 @@ use crate::hittables::Hittable;
 use crate::ray::Hit;
 use crate::util::{Bounds3, Color3};
 use nalgebra::{Point3, Vector3};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone)]
-pub struct Translate<X: Hittable> {
-    pub hittable: X,
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Translate {
+    pub hittable: Box<dyn Hittable>,
     pub translation: Vector3<f64>,
 }
 
-impl<X: Hittable> Hittable for Translate<X> {
+#[typetag::serde(name = "translate")]
+impl Hittable for Translate {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         self.hittable.sdf(sample + self.translation)
     }

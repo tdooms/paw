@@ -2,14 +2,16 @@ use crate::hittables::Hittable;
 use crate::ray::Hit;
 use crate::util::{Bounds3, Color3};
 use nalgebra::{Point3, Vector3};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone)]
-pub struct Repeat<X: Hittable> {
-    pub hittable: X,
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Repeat {
+    pub hittable: Box<dyn Hittable>,
     pub repetition: Vector3<f64>,
 }
 
-impl<X: Hittable> Hittable for Repeat<X> {
+#[typetag::serde(name = "repeat")]
+impl Hittable for Repeat {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         // TODO: this only repeats on positive values, meaning only 1/8 of the space,
         // using .abs() doesn't work

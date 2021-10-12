@@ -2,11 +2,10 @@ use std::fs::read_to_string;
 use std::path::Path;
 
 use nalgebra::{point, Point3, UnitVector3, Vector3};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::hittables::{Hittable, Scene};
 use crate::lights::{Light, PointLight};
-use crate::util::World;
 
 // When casting a ray, do not start at 0 to avoid colliding with the object itself
 fn start_eps() -> f64 {
@@ -20,7 +19,7 @@ fn hit_eps() -> f64 {
 
 // When sampling a normal use this as step
 fn normal_eps() -> f64 {
-    0.001
+    0.0001
 }
 
 // End of the world, stop marching when outside this range
@@ -59,7 +58,7 @@ fn fov() -> f64 {
     std::f64::consts::FRAC_PI_2
 }
 
-#[derive(Clone, Copy, Debug, Deserialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct Settings {
     #[serde(default = "start_eps")]
     pub start_eps: f64,
@@ -77,8 +76,20 @@ pub struct Settings {
     pub max_steps: u64,
 }
 
+impl Default for Settings {
+    fn default() -> Self {
+        Self {
+            start_eps: start_eps(),
+            hit_eps: hit_eps(),
+            normal_eps: normal_eps(),
+            max_t: max_t(),
+            max_steps: max_steps(),
+        }
+    }
+}
+
 // nalgebra vectors do not allow for const...
-#[derive(Clone, Copy, Debug, Deserialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct CameraParams {
     #[serde(default = "look_from")]
     pub look_from: Point3<f64>,
@@ -93,7 +104,18 @@ pub struct CameraParams {
     pub fov: f64,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize)]
+impl Default for CameraParams {
+    fn default() -> Self {
+        Self {
+            look_from: look_from(),
+            look_at: look_at(),
+            up: up(),
+            fov: fov(),
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct FilmParams {
     #[serde(default = "width")]
     pub width: u32,
@@ -102,43 +124,37 @@ pub struct FilmParams {
     pub height: u32,
 }
 
-// #[derive(Deserialize)]
+impl Default for FilmParams {
+    fn default() -> Self {
+        Self {
+            width: width(),
+            height: height(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize)]
 pub struct Config {
+    #[serde(default)]
     pub settings: Settings,
+
+    #[serde(default)]
     pub camera: CameraParams,
+
+    #[serde(default)]
     pub film: FilmParams,
 
-    // #[serde(default = "crate::scene::create_world")]
-    pub world: World,
+    pub world: Box<dyn Hittable>,
 
-    // #[serde(default = "crate::scene::create_lights")]
+    #[serde(default)]
     pub lights: Vec<PointLight>,
 }
 
 pub fn parse_config(path: impl AsRef<Path>) -> Result<Config, Box<dyn std::error::Error>> {
-    // let result = serde_json::from_str(&read_to_string(path)?)?;
-    // Ok(result)
+    let result = serde_json::from_str(&read_to_string(path)?)?;
+    Ok(result)
 
-    let config = Config {
-        settings: Settings {
-            start_eps: start_eps(),
-            hit_eps: hit_eps(),
-            normal_eps: normal_eps(),
-            max_t: max_t(),
-            max_steps: max_steps(),
-        },
-        camera: CameraParams {
-            look_from: look_from(),
-            look_at: look_at(),
-            up: up(),
-            fov: fov(),
-        },
-        film: FilmParams {
-            width: width(),
-            height: height(),
-        },
-        world: Box::new(crate::scene::create_world()),
-        lights: crate::scene::create_lights(),
-    };
-    Ok(config)
+    // let file = std::fs::File::create(path)?;
+    // serde_json::to_writer_pretty(file, &config)?;
+    // Ok(config)
 }
