@@ -2,10 +2,10 @@ use nalgebra::{vector, Point3, Unit, Vector3};
 
 use crate::config::Settings;
 use crate::hittables::Hittable;
-use crate::lights::{Light, PointLight};
+use crate::lights::PointLight;
 use crate::ray::{Hit, Ray};
 use crate::shaders::base::Shader;
-use crate::util::{reflect, tetrahedron_normal, Color3};
+use crate::util::{reflect, Color3};
 
 pub struct Phong;
 

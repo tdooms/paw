@@ -1,7 +1,5 @@
 use std::fmt::Debug;
 
-use serde::Deserialize;
-
 use crate::ray::Hit;
 use crate::util::Color3;
 

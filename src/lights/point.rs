@@ -12,7 +12,7 @@ pub struct PointLight {
 }
 
 impl Light for PointLight {
-    fn sample(&self, point: Point3<f64>) -> f64 {
+    fn sample(&self, _point: Point3<f64>) -> f64 {
         1.0
     }
 }

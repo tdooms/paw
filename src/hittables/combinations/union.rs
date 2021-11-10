@@ -1,19 +1,16 @@
 use nalgebra::Point3;
 use serde::{Deserialize, Serialize};
 
-use crate::hittables::Hittable;
-use crate::object::Object;
-use crate::ray::Hit;
-use crate::util::{Bounds3, Color3};
+use crate::hittables::{Container, Hittable};
+use crate::util::Bounds3;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Union {
-    pub first: Object,
-    pub second: Object,
+    pub first: Box<dyn Hittable>,
+    pub second: Box<dyn Hittable>,
 }
 
-#[typetag::serde(name = "union")]
-impl Hittable for Union {
+impl Primitive for Union {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         self.first.sdf(sample).min(self.second.sdf(sample))
     }

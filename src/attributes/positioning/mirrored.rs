@@ -2,8 +2,7 @@ use nalgebra::{point, Point3};
 use serde::{Deserialize, Serialize};
 
 use crate::hittables::Hittable;
-use crate::ray::Hit;
-use crate::util::{Bounds3, Color3};
+use crate::util::Bounds3;
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub enum Axis {
@@ -21,7 +20,6 @@ pub struct Mirrored {
     pub axis: Axis,
 }
 
-#[typetag::serde(name = "mirrored")]
 impl Hittable for Mirrored {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         let p = sample.coords;

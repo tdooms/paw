@@ -1,9 +1,7 @@
-use std::env::join_paths;
 use std::ops::Deref;
 use std::path::{Path, PathBuf};
 
 use bmp::{px, Image, Pixel};
-use nalgebra::{Point3, Vector3};
 
 use crate::camera::Camera;
 use crate::config::{parse_config, CameraParams, FilmParams};
@@ -17,7 +15,6 @@ mod config;
 mod hittables;
 mod lights;
 mod materials;
-mod object;
 mod ray;
 mod shaders;
 mod util;

@@ -1,20 +1,17 @@
 use nalgebra::Point3;
 use serde::{Deserialize, Serialize};
 
-use crate::hittables::Hittable;
-use crate::object::Object;
-use crate::ray::Hit;
-use crate::util::{Bounds3, Color3};
+use crate::hittables::{Container, Hittable};
+use crate::util::Bounds3;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SmoothSubtraction {
-    pub first: Object,
-    pub second: Object,
+    pub first: Box<dyn Hittable>,
+    pub second: Box<dyn Hittable>,
     pub smoothness: f64,
 }
 
-#[typetag::serde(name = "smooth_subtraction")]
-impl Hittable for SmoothSubtraction {
+impl Primitive for SmoothSubtraction {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         let d1 = self.first.sdf(sample);
         let d2 = self.second.sdf(sample);

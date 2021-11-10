@@ -4,8 +4,8 @@ use std::path::Path;
 use nalgebra::{point, Point3, UnitVector3, Vector3};
 use serde::{Deserialize, Serialize};
 
-use crate::hittables::{Hittable, Scene};
-use crate::lights::{Light, PointLight};
+use crate::hittables::Hittable;
+use crate::lights::PointLight;
 
 // When casting a ray, do not start at 0 to avoid colliding with the object itself
 fn start_eps() -> f64 {

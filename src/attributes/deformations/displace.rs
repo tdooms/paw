@@ -1,12 +1,8 @@
-use std::fmt::{Debug, Formatter};
+use std::fmt::Debug;
 
-use nalgebra::Point3;
 use serde::{Deserialize, Serialize};
 
-use crate::attributes::Attribute;
 use crate::hittables::Hittable;
-use crate::ray::Hit;
-use crate::util::{Bounds3, Color3};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Displace {
