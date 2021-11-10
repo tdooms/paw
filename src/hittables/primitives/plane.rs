@@ -1,9 +1,10 @@
+use nalgebra::Point3;
+use serde::{Deserialize, Serialize};
+
 use crate::hittables::Hittable;
 use crate::materials::Material;
 use crate::ray::Hit;
 use crate::util::{Bounds3, Color3};
-use nalgebra::Point3;
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Plane {
@@ -14,10 +15,6 @@ pub struct Plane {
 impl Hittable for Plane {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         sample.y
-    }
-
-    fn material(&self, hit: &Hit) -> Color3 {
-        self.material.color(hit)
     }
 
     fn bounds(&self) -> Bounds3 {

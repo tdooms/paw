@@ -1,5 +1,6 @@
-use crate::ray::Ray;
 use nalgebra::{Point3, Unit, UnitVector3, Vector3};
+
+use crate::ray::Ray;
 
 pub struct Camera {
     origin: Point3<f64>,

@@ -1,8 +1,9 @@
+use nalgebra::{Point3, Vector3};
+use serde::{Deserialize, Serialize};
+
 use crate::hittables::Hittable;
 use crate::ray::Hit;
 use crate::util::{Bounds3, Color3};
-use nalgebra::{Point3, Vector3};
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Repeat {
@@ -22,10 +23,6 @@ impl Hittable for Repeat {
         let q = Point3::from(z - c.scale(0.5));
 
         self.hittable.sdf(q)
-    }
-
-    fn material(&self, hit: &Hit) -> Color3 {
-        self.hittable.material(hit)
     }
 
     fn bounds(&self) -> Bounds3 {

@@ -1,4 +1,4 @@
-use nalgebra::{vector, Point3, Unit, UnitVector3, Vector3};
+use nalgebra::{Point3, Unit, UnitVector3, vector, Vector3};
 
 use crate::hittables::Hittable;
 

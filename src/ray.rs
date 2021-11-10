@@ -1,6 +1,6 @@
-use crate::config::Settings;
 use nalgebra::{Point3, Unit, UnitVector3, Vector3};
 
+use crate::config::Settings;
 use crate::hittables::Hittable;
 use crate::util::tetrahedron_normal;
 

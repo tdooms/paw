@@ -151,10 +151,5 @@ pub struct Config {
 }
 
 pub fn parse_config(path: impl AsRef<Path>) -> Result<Config, Box<dyn std::error::Error>> {
-    let result = serde_json::from_str(&read_to_string(path)?)?;
-    Ok(result)
-
-    // let file = std::fs::File::create(path)?;
-    // serde_json::to_writer_pretty(file, &config)?;
-    // Ok(config)
+    Ok(serde_json::from_str(&read_to_string(path)?)?)
 }

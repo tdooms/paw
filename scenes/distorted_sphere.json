@@ -1,0 +1,36 @@
+{
+  "world": {
+    "displace": {
+      "hittable": {
+        "sphere": {
+          "radius": 1.0,
+          "material": {
+            "color": {
+              "color": [
+                1.0,
+                0.2,
+                0.4
+              ]
+            }
+          }
+        }
+      },
+      "scale": 0.05
+    }
+  },
+  "lights": [
+    {
+      "position": [
+        4,
+        2,
+        -1
+      ],
+      "color": [
+        1.0,
+        0.7,
+        0.7
+      ],
+      "softness": 8
+    }
+  ]
+}

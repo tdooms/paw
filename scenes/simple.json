@@ -17,18 +17,21 @@
               }
             },
             "second": {
-              "translate": {
-                "hittable": {
-                  "cuboid": {
-                    "extent": [1, 1, 1],
-                    "material": {
-                      "color": {
-                        "color": [0.1, 0.8, 0.1]
-                      }
-                    }
+              "cuboid": {
+                "extent": [
+                  1,
+                  1,
+                  1
+                ],
+                "material": {
+                  "color": {
+                    "color": [
+                      0.1,
+                      0.8,
+                      0.1
+                    ]
                   }
-                },
-                "translation": [0.1, 0, 0]
+                }
               }
             },
             "smoothness": 0.25
@@ -40,14 +43,26 @@
               "plane": {
                 "material": {
                   "checkered": {
-                    "c1": [1, 1, 1],
-                    "c2": [0.2, 0.2, 0.2],
+                    "c1": [
+                      1,
+                      1,
+                      1
+                    ],
+                    "c2": [
+                      0.2,
+                      0.2,
+                      0.2
+                    ],
                     "repeat": 0.5
                   }
                 }
               }
             },
-            "translation": [0, 1, 0]
+            "translation": [
+              0,
+              1,
+              0
+            ]
           }
         }
       ]
@@ -55,8 +70,16 @@
   },
   "lights": [
     {
-      "position": [4, 2, -1],
-      "color": [1.0, 1.0, 1.0],
+      "position": [
+        4,
+        2,
+        -1
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
       "softness": 8
     }
   ]

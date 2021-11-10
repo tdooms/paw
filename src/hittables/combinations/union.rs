@@ -1,22 +1,15 @@
-use crate::hittables::Hittable;
-use crate::ray::Hit;
-use crate::util::{Bounds3, Color3};
 use nalgebra::Point3;
 use serde::{Deserialize, Serialize};
 
+use crate::hittables::Hittable;
+use crate::object::Object;
+use crate::ray::Hit;
+use crate::util::{Bounds3, Color3};
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Union {
-    pub first: Box<dyn Hittable>,
-    pub second: Box<dyn Hittable>,
-}
-
-impl Union {
-    pub fn new(first: impl Hittable + 'static, second: impl Hittable + 'static) -> Self {
-        Self {
-            first: Box::new(first),
-            second: Box::new(second),
-        }
-    }
+    pub first: Object,
+    pub second: Object,
 }
 
 #[typetag::serde(name = "union")]
@@ -25,14 +18,8 @@ impl Hittable for Union {
         self.first.sdf(sample).min(self.second.sdf(sample))
     }
 
-    fn material(&self, hit: &Hit) -> Color3 {
-        match self.first.sdf(hit.surface) > self.second.sdf(hit.surface) {
-            true => self.second.material(hit),
-            false => self.first.material(hit),
-        }
-    }
-
     fn bounds(&self) -> Bounds3 {
-        self.first.bounds().combine(&self.second.bounds())
+        // self.first.bounds().combine(&self.second.bounds())
+        Bounds3::infinite()
     }
 }

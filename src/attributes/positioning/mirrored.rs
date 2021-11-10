@@ -1,8 +1,9 @@
+use nalgebra::{point, Point3};
+use serde::{Deserialize, Serialize};
+
 use crate::hittables::Hittable;
 use crate::ray::Hit;
 use crate::util::{Bounds3, Color3};
-use nalgebra::{point, Point3};
-use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub enum Axis {
@@ -33,10 +34,6 @@ impl Hittable for Mirrored {
             Axis::XYZ => point![p.x.abs(), p.y.abs(), p.z.abs()],
         };
         self.hittable.sdf(sample)
-    }
-
-    fn material(&self, hit: &Hit) -> Color3 {
-        self.hittable.material(hit)
     }
 
     fn bounds(&self) -> Bounds3 {

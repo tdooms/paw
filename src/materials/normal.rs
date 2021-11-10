@@ -1,8 +1,9 @@
+use nalgebra::{vector, Vector3};
+use serde::{Deserialize, Serialize};
+
 use crate::materials::Material;
 use crate::ray::Hit;
 use crate::util::Color3;
-use nalgebra::{vector, Vector3};
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Normal;

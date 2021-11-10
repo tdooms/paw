@@ -1,3 +1,3 @@
-mod scene;
-
 pub use scene::*;
+
+mod scene;

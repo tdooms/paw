@@ -1,7 +1,8 @@
-use crate::lights::base::Light;
-use crate::util::Color3;
 use nalgebra::Point3;
 use serde::{Deserialize, Serialize};
+
+use crate::lights::base::Light;
+use crate::util::Color3;
 
 #[derive(Serialize, Deserialize)]
 pub struct PointLight {

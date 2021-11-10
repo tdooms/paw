@@ -1,28 +1,16 @@
-use crate::hittables::Hittable;
-use crate::ray::Hit;
-use crate::util::{Bounds3, Color3};
 use nalgebra::Point3;
 use serde::{Deserialize, Serialize};
 
+use crate::hittables::Hittable;
+use crate::object::Object;
+use crate::ray::Hit;
+use crate::util::{Bounds3, Color3};
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SmoothIntersection {
-    pub first: Box<dyn Hittable>,
-    pub second: Box<dyn Hittable>,
+    pub first: Object,
+    pub second: Object,
     pub smoothness: f64,
-}
-
-impl SmoothIntersection {
-    pub fn new(
-        first: impl Hittable + 'static,
-        second: impl Hittable + 'static,
-        smoothness: f64,
-    ) -> Self {
-        Self {
-            first: Box::new(first),
-            second: Box::new(second),
-            smoothness,
-        }
-    }
 }
 
 #[typetag::serde(name = "smooth_intersection")]
@@ -35,11 +23,8 @@ impl Hittable for SmoothIntersection {
         d1.max(d2) + h * h * 0.25 / self.smoothness
     }
 
-    fn material(&self, hit: &Hit) -> Color3 {
-        self.first.material(hit)
-    }
-
     fn bounds(&self) -> Bounds3 {
-        self.first.bounds().combine(&self.second.bounds())
+        // self.first.bounds().combine(&self.second.bounds())
+        Bounds3::infinite()
     }
 }

@@ -1,6 +1,6 @@
 use std::env::join_paths;
 use std::ops::Deref;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use bmp::{px, Image, Pixel};
 use nalgebra::{Point3, Vector3};
@@ -11,11 +11,13 @@ use crate::ray::Hit;
 use crate::shaders::Phong;
 use crate::shaders::Shader;
 
+mod attributes;
 mod camera;
 mod config;
 mod hittables;
 mod lights;
 mod materials;
+mod object;
 mod ray;
 mod shaders;
 mod util;
@@ -47,20 +49,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut film = Image::new(width, height);
     let shader = Phong;
 
+    let map_hit = |hit: Hit| {
+        let color = shader.shade(
+            &hit,
+            eye,
+            &config.lights,
+            config.world.deref(),
+            &config.settings,
+        );
+        let scaled = color.scale(255.99);
+        px!(scaled.x, scaled.y, scaled.z)
+    };
+
     for (x, y) in film.coordinates() {
         let ray = camera.ray(x as f64 / width as f64, y as f64 / height as f64);
-
-        let map_hit = |hit: Hit| {
-            let color = shader.shade(
-                &hit,
-                eye,
-                &config.lights,
-                config.world.deref(),
-                &config.settings,
-            );
-            let scaled = color.scale(255.99);
-            px!(scaled.x, scaled.y, scaled.z)
-        };
 
         let pixel = match ray.march(config.world.deref(), eye, &config.settings) {
             None => px!(0, 0, 0),
@@ -70,6 +72,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         film.set_pixel(x, y, pixel);
     }
 
-    film.save("img.bmp")?;
+    let mut output = PathBuf::from(path);
+    output.set_extension("bmp");
+    film.save(output)?;
     Ok(())
 }

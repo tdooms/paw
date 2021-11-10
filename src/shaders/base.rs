@@ -1,6 +1,6 @@
-use crate::config::Settings;
 use nalgebra::{Point3, Vector3};
 
+use crate::config::Settings;
 use crate::hittables::Hittable;
 use crate::lights::{Light, PointLight};
 use crate::ray::Hit;

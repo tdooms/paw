@@ -19,7 +19,7 @@ impl Shader for Phong {
         settings: &Settings,
     ) -> Color3 {
         let ambient = vector![0.2, 0.2, 0.2];
-        let diffuse = world.material(hit);
+        let diffuse = vector![1.0, 1.0, 1.0]; //world.material(hit);
         let specular = vector![1.0, 1.0, 1.0];
         let shininess = 10.0;
 

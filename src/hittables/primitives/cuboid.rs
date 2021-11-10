@@ -1,6 +1,7 @@
-use nalgebra::{vector, Point3, Vector3};
-use serde::{Deserialize, Serialize};
 use std::rc::Rc;
+
+use nalgebra::{Point3, vector, Vector3};
+use serde::{Deserialize, Serialize};
 
 use crate::hittables::Hittable;
 use crate::materials::{Color, Material};
@@ -10,14 +11,12 @@ use crate::util::{Bounds3, Color3};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Cuboid {
     pub extent: Vector3<f64>,
-    pub material: Box<dyn Material>,
 }
 
 impl Default for Cuboid {
     fn default() -> Self {
         Self {
             extent: vector![1.0, 1.0, 1.0],
-            material: Box::new(Color::default()),
         }
     }
 }
@@ -31,10 +30,6 @@ impl Hittable for Cuboid {
         let outside_dist = d.map(|x| x.max(0.)).norm();
 
         inside_dist + outside_dist
-    }
-
-    fn material(&self, hit: &Hit) -> Color3 {
-        self.material.color(hit)
     }
 
     fn bounds(&self) -> Bounds3 {
