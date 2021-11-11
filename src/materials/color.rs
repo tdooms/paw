@@ -18,7 +18,7 @@ impl Default for Color {
     }
 }
 
-#[typetag::serde(name = "color")]
+// #[typetag::serde(name = "color")]
 impl Material for Color {
     fn color(&self, _: &Hit) -> Color3 {
         self.color

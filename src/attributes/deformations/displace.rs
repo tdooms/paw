@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::hittables::Hittable;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub struct Displace {
     pub hittable: Box<dyn Hittable>,
     pub scale: f64,

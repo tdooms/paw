@@ -1,7 +1,7 @@
 use nalgebra::{vector, Point3, Unit, Vector3};
 
 use crate::config::Settings;
-use crate::hittables::Hittable;
+use crate::hittables::{Hittable, Object};
 use crate::lights::PointLight;
 use crate::ray::{Hit, Ray};
 use crate::shaders::base::Shader;
@@ -15,7 +15,7 @@ impl Shader for Phong {
         hit: &Hit,
         eye: Point3<f64>,
         lights: &[PointLight],
-        world: &dyn Hittable,
+        world: &dyn Object,
         settings: &Settings,
     ) -> Color3 {
         let ambient = vector![0.2, 0.2, 0.2];

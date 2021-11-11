@@ -1,13 +1,13 @@
 use nalgebra::Point3;
 use serde::{Deserialize, Serialize};
 
-use crate::hittables::Container;
-use crate::hittables::Hittable;
+use crate::hittables::{Hittable, Object};
+use crate::materials::Material;
 use crate::util::Bounds3;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub struct Scene {
-    pub objects: Vec<Box<dyn Container>>,
+    pub objects: Vec<Box<dyn Object>>,
 }
 
 impl Hittable for Scene {

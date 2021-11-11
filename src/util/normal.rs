@@ -1,11 +1,11 @@
 use nalgebra::{vector, Point3, Unit, UnitVector3, Vector3};
 
-use crate::hittables::Hittable;
+use crate::hittables::Object;
 
 pub fn naive_normal(
     eye: Point3<f64>,
     surface: Point3<f64>,
-    world: &impl Hittable,
+    world: &impl Object,
 ) -> UnitVector3<f64> {
     // Scale up the normal polling offset when far away to improve aliasing
     let h = 0.001 * (surface - eye).norm();
@@ -21,7 +21,7 @@ pub fn naive_normal(
 pub fn tetrahedron_normal(
     eye: Point3<f64>,
     surface: Point3<f64>,
-    world: &dyn Hittable,
+    world: &dyn Object,
 ) -> UnitVector3<f64> {
     // Scale up the normal polling offset when far away to improve aliasing
     let h = 0.001 * (surface - eye).norm();

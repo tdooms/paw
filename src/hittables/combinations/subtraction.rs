@@ -1,16 +1,17 @@
 use nalgebra::Point3;
 use serde::{Deserialize, Serialize};
 
-use crate::hittables::{Container, Hittable};
+use crate::hittables::{Container, Hittable, Object};
+use crate::materials::Material;
 use crate::util::Bounds3;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub struct Subtraction {
-    pub first: Box<dyn Hittable>,
-    pub second: Box<dyn Hittable>,
+    pub first: Box<dyn Object>,
+    pub second: Box<dyn Object>,
 }
 
-impl Primitive for Subtraction {
+impl Hittable for Subtraction {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         self.first.sdf(sample).max(-self.second.sdf(sample))
     }

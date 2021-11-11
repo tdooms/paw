@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::hittables::Hittable;
 use crate::util::Bounds3;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub struct Repeat {
     pub hittable: Box<dyn Hittable>,
     pub repetition: Vector3<f64>,

@@ -1,6 +1,5 @@
 pub use aggregates::*;
 pub use attributes::Attributes;
-pub use attributes::Container;
 pub use base::Hittable;
 pub use base::*;
 pub use combinations::*;

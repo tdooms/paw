@@ -8,7 +8,7 @@ use crate::util::Color3;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Snow;
 
-#[typetag::serde(name = "snow")]
+// #[typetag::serde(name = "snow")]
 impl Material for Snow {
     fn color(&self, hit: &Hit) -> Color3 {
         let angle = hit.normal.dot(&Vector3::y_axis());

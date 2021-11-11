@@ -14,7 +14,7 @@ pub enum Axis {
     XYZ,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub struct Mirrored {
     pub hittable: Box<dyn Hittable>,
     pub axis: Axis,

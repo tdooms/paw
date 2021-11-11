@@ -3,6 +3,7 @@ use crate::hittables::Hittable;
 use crate::util::Color3;
 use nalgebra::Point3;
 
+#[derive(Debug)]
 pub struct Attributes {
     pub elongate: Option<Elongate>,
     pub onion: Option<Onion>,
@@ -15,12 +16,10 @@ pub struct Attributes {
 }
 
 impl Attributes {
-    pub fn apply(&self, sample: Point3<f64>, hittable: &dyn Hittable) -> f64 {
-        let base = |sample| hittable.sdf(sample);
-
+    pub fn apply(&self, sample: Point3<f64>, primitive: impl Fn(Point3<f64>) -> f64) -> f64 {
         let scaled = |sample| match self.scale.as_ref() {
-            Some(scale) => scale.adapt(sample, &base),
-            None => base(sample),
+            Some(scale) => scale.adapt(sample, &primitive),
+            None => primitive(sample),
         };
 
         let translated = |sample| match self.translate.as_ref() {

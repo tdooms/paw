@@ -1,7 +1,7 @@
 use nalgebra::{Point3, Unit, UnitVector3};
 
 use crate::config::Settings;
-use crate::hittables::Hittable;
+use crate::hittables::{Hittable, Object};
 use crate::util::tetrahedron_normal;
 
 #[derive(Debug, Clone, Copy)]
@@ -29,12 +29,7 @@ impl Ray {
         self.origin + self.direction.scale(t)
     }
 
-    pub fn march(
-        &self,
-        world: &dyn Hittable,
-        eye: Point3<f64>,
-        settings: &Settings,
-    ) -> Option<Hit> {
+    pub fn march(&self, world: &dyn Object, eye: Point3<f64>, settings: &Settings) -> Option<Hit> {
         let mut depth = settings.start_eps;
 
         for _ in 0..settings.max_steps {
@@ -63,7 +58,7 @@ impl Ray {
     pub fn closest(
         from: Point3<f64>,
         to: Point3<f64>,
-        world: &dyn Hittable,
+        world: &dyn Object,
         settings: &Settings,
         smoothness: f64,
     ) -> f64 {

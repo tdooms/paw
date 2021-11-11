@@ -1,17 +1,18 @@
 use nalgebra::Point3;
 use serde::{Deserialize, Serialize};
 
-use crate::hittables::{Container, Hittable};
+use crate::hittables::{Container, Hittable, Object};
+use crate::materials::Material;
 use crate::util::Bounds3;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub struct SmoothIntersection {
-    pub first: Box<dyn Hittable>,
-    pub second: Box<dyn Hittable>,
+    pub first: Box<dyn Object>,
+    pub second: Box<dyn Object>,
     pub smoothness: f64,
 }
 
-impl Primitive for SmoothIntersection {
+impl Hittable for SmoothIntersection {
     fn sdf(&self, sample: Point3<f64>) -> f64 {
         let d1 = self.first.sdf(sample);
         let d2 = self.second.sdf(sample);

@@ -11,7 +11,7 @@ pub struct Checkered {
     pub repeat: f64,
 }
 
-#[typetag::serde(name = "checkered")]
+// #[typetag::serde(name = "checkered")]
 impl Material for Checkered {
     fn color(&self, hit: &Hit) -> Color3 {
         let offset = hit.surface.map(|x| (x / self.repeat).floor() as i64).coords;
