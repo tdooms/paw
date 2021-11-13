@@ -1,32 +1,46 @@
-use crate::attributes::*;
-use crate::hittables::Hittable;
-use crate::util::Color3;
 use nalgebra::Point3;
 
-#[derive(Debug)]
+use crate::attributes::*;
+use crate::hittables::Hittable;
+
+#[derive(Debug, Default, serde::Serialize, serde::Deserialize)]
 pub struct Attributes {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub elongate: Option<Elongate>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub onion: Option<Onion>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub round: Option<Round>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub displace: Option<Displace>,
-    pub mirrored: Option<Mirrored>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mirror: Option<Mirror>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub repeat: Option<Repeat>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub scale: Option<Scale>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub translate: Option<Translate>,
 }
 
 impl Attributes {
-    pub fn apply(&self, sample: Point3<f64>, primitive: impl Fn(Point3<f64>) -> f64) -> f64 {
-        let scaled = |sample| match self.scale.as_ref() {
-            Some(scale) => scale.adapt(sample, &primitive),
-            None => primitive(sample),
-        };
+    fn modify<T: Attribute + 'static>(
+        attribute: Option<T>,
+        previous: impl Fn(Point3<f64>) -> f64,
+    ) -> impl Fn(Point3<f64>) -> f64 {
+        move |sample| match attribute {
+            Some(attribute) => attribute.adapt(sample, &previous),
+            None => previous(sample),
+        }
+    }
 
-        let translated = |sample| match self.translate.as_ref() {
-            Some(translate) => translate.adapt(sample, &scaled),
-            None => scaled(sample),
-        };
+    pub fn apply(&self, sample: Point3<f64>, sdf: impl Fn(Point3<f64>) -> f64) -> f64 {
+        let scaled = Self::modify(self.scale, &sdf);
+        let translated = Self::modify(self.translate, &scaled);
+        let displaced = Self::modify(self.displace, &translated);
+        let mirrored = Self::modify(self.mirror, &displaced);
+        let repeated = Self::modify(self.repeat, &mirrored);
 
-        translated(sample)
+        repeated(sample)
     }
 }

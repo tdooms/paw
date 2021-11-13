@@ -1,9 +1,9 @@
-pub use mirrored::*;
+pub use mirror::*;
 pub use repeat::*;
 pub use scale::*;
 pub use translate::*;
 
-mod mirrored;
+mod mirror;
 mod repeat;
 mod scale;
 mod translate;

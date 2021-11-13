@@ -1,13 +1,13 @@
 use std::fs::read_to_string;
 use std::path::Path;
 
-use crate::attributes::Scale;
-use nalgebra::{point, Point3, UnitVector3, Vector3};
+use nalgebra::{point, vector, Point3, UnitVector3, Vector3};
 use serde::{Deserialize, Serialize};
 
-use crate::hittables::{Attributes, Container, Hittable, Object, Sphere};
+use crate::attributes::Scale;
+use crate::hittables::{Attributes, Hittable, Scene, Sphere, Union};
 use crate::lights::PointLight;
-use crate::materials::{Material, Normal};
+use crate::materials::Normal;
 
 // When casting a ray, do not start at 0 to avoid colliding with the object itself
 fn start_eps() -> f64 {
@@ -61,7 +61,7 @@ fn fov() -> f64 {
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
-pub struct Settings {
+pub struct MarchParams {
     #[serde(default = "start_eps")]
     pub start_eps: f64,
 
@@ -78,7 +78,7 @@ pub struct Settings {
     pub max_steps: u64,
 }
 
-impl Default for Settings {
+impl Default for MarchParams {
     fn default() -> Self {
         Self {
             start_eps: start_eps(),
@@ -135,43 +135,40 @@ impl Default for FilmParams {
     }
 }
 
-// #[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct Config {
-    // #[serde(default)]
-    pub settings: Settings,
+    #[serde(default)]
+    pub march: MarchParams,
 
-    // #[serde(default)]
+    #[serde(default)]
     pub camera: CameraParams,
 
-    // #[serde(default)]
+    #[serde(default)]
     pub film: FilmParams,
 
-    pub world: Box<dyn Object>,
+    pub world: Box<dyn Hittable>,
 
-    // #[serde(default)]
+    #[serde(default)]
     pub lights: Vec<PointLight>,
 }
 
 pub fn parse_config(path: impl AsRef<Path>) -> Result<Config, Box<dyn std::error::Error>> {
-    // Ok(serde_json::from_str(&read_to_string(path)?)?)
-    Ok(Config {
-        settings: Default::default(),
-        camera: Default::default(),
-        film: Default::default(),
-        world: Box::new(Container {
-            primitive: Box::new(Sphere),
-            material: Box::new(Normal),
-            attributes: Attributes {
-                elongate: None,
-                onion: None,
-                round: None,
-                displace: None,
-                mirrored: None,
-                repeat: None,
-                scale: Some(Scale(2.0)),
-                translate: None,
-            },
-        }),
-        lights: vec![],
-    })
+    Ok(serde_json::from_str(&read_to_string(path)?)?)
+    // Ok(Config {
+    //     march: Default::default(),
+    //     camera: Default::default(),
+    //     film: Default::default(),
+    //     world: Box::new(Sphere {
+    //         material: Box::new(Normal),
+    //         attributes: Attributes {
+    //             scale: Some(Scale(2.0)),
+    //             ..Default::default()
+    //         },
+    //     }),
+    //     lights: vec![PointLight {
+    //         position: point![4.0, 2.0, -1.0],
+    //         color: vector!(1.0, 1.0, 1.0),
+    //         softness: 8.0,
+    //     }],
+    // })
 }

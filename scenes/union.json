@@ -11,19 +11,8 @@
     "world": {
         "type": "union",
         "first": {
-            "type": "subtraction",
-            "second": {
-                "type": "cube",
-                "material": {"type": "normal"}
-            },
-            "first": {
-                "type": "sphere",
-                "material": {"type": "normal"},
-                "scale": 1.2
-            },
-            "smoothness": 0.1,
-            "translate": [0.0, -0.8, 0.0],
-            "scale": 0.8
+            "type": "cube",
+            "material": {"type": "normal"}
         },
         "second": {
             "type": "plane",

@@ -8,6 +8,8 @@ edition = "2018"
 
 
 [dependencies]
+pawcro = {path = "pawcro"}
+
 nalgebra = { version = "*", features = ["serde-serialize"] }
 bmp = "*"
 

@@ -52,7 +52,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             eye,
             &config.lights,
             config.world.deref(),
-            &config.settings,
+            &config.march,
         );
         let scaled = color.scale(255.99);
         px!(scaled.x, scaled.y, scaled.z)
@@ -61,7 +61,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for (x, y) in film.coordinates() {
         let ray = camera.ray(x as f64 / width as f64, y as f64 / height as f64);
 
-        let pixel = match ray.march(config.world.deref(), eye, &config.settings) {
+        let pixel = match ray.march(config.world.deref(), eye, &config.march) {
             None => px!(0, 0, 0),
             Some(surface) => map_hit(surface),
         };

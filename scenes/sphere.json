@@ -1,0 +1,16 @@
+{
+    "world": {
+        "type": "sphere",
+        "material": {"type": "normal"},
+        "translate": [0.2, 0.1, -0.3],
+        "scale": 1.3
+    },
+
+    "lights": [
+        {
+            "position": [4, 2, -1],
+            "color": [1.0, 1.0, 1.0],
+            "softness": 8
+        }
+    ]
+}

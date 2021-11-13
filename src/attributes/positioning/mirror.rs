@@ -1,10 +1,9 @@
-use nalgebra::{point, Point3};
-use serde::{Deserialize, Serialize};
-
+use crate::attributes::Attribute;
 use crate::hittables::Hittable;
 use crate::util::Bounds3;
+use nalgebra::{point, Point3};
 
-#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, serde::Serialize, serde::Deserialize)]
 pub enum Axis {
     X,
     Y,
@@ -14,16 +13,13 @@ pub enum Axis {
     XYZ,
 }
 
-#[derive(Debug)]
-pub struct Mirrored {
-    pub hittable: Box<dyn Hittable>,
-    pub axis: Axis,
-}
+#[derive(Clone, Copy, Debug, serde::Serialize, serde::Deserialize)]
+pub struct Mirror(pub Axis);
 
-impl Hittable for Mirrored {
-    fn sdf(&self, sample: Point3<f64>) -> f64 {
+impl Attribute for Mirror {
+    fn adapt(&self, sample: Point3<f64>, sdf: &dyn Fn(Point3<f64>) -> f64) -> f64 {
         let p = sample.coords;
-        let sample = match self.axis {
+        let sample = match self.0 {
             Axis::X => point![p.x.abs(), p.y, p.z],
             Axis::Y => point![p.x, p.y.abs(), p.z],
             Axis::Z => point![p.x, p.y, p.z.abs()],
@@ -31,11 +27,6 @@ impl Hittable for Mirrored {
             Axis::YZ => point![p.x, p.y.abs(), p.z.abs()],
             Axis::XYZ => point![p.x.abs(), p.y.abs(), p.z.abs()],
         };
-        self.hittable.sdf(sample)
-    }
-
-    fn bounds(&self) -> Bounds3 {
-        // TODO: fix
-        Bounds3::infinite()
+        sdf(sample)
     }
 }
