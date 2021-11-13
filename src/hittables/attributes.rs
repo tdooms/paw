@@ -1,7 +1,6 @@
 use nalgebra::Point3;
 
 use crate::attributes::*;
-use crate::hittables::Hittable;
 
 #[derive(Debug, Default, serde::Serialize, serde::Deserialize)]
 pub struct Attributes {

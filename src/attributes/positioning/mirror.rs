@@ -1,7 +1,6 @@
-use crate::attributes::Attribute;
-use crate::hittables::Hittable;
-use crate::util::Bounds3;
 use nalgebra::{point, Point3};
+
+use crate::attributes::Attribute;
 
 #[derive(Clone, Copy, Debug, serde::Serialize, serde::Deserialize)]
 pub enum Axis {

@@ -1,8 +1,6 @@
-use crate::attributes::Attribute;
 use nalgebra::{Point3, Vector3};
 
-use crate::hittables::Hittable;
-use crate::util::Bounds3;
+use crate::attributes::Attribute;
 
 #[derive(Clone, Copy, Debug, serde::Serialize, serde::Deserialize)]
 pub struct Repeat(pub Vector3<f64>);
@@ -19,13 +17,3 @@ impl Attribute for Repeat {
         sdf(q)
     }
 }
-
-// impl Hittable for Repeat {
-//     fn sdf(&self, sample: Point3<f64>) -> f64 {
-//
-//     }
-//
-//     fn bounds(&self) -> Bounds3 {
-//         Bounds3::infinite()
-//     }
-// }

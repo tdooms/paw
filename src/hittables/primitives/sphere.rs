@@ -1,4 +1,3 @@
-use nalgebra::Point3;
 use pawcro::primitive;
 
 #[primitive(Sphere)]

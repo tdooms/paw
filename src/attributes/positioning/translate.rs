@@ -1,5 +1,6 @@
-use crate::attributes::Attribute;
 use nalgebra::{Point3, Vector3};
+
+use crate::attributes::Attribute;
 
 #[derive(Clone, Copy, Debug, serde::Serialize, serde::Deserialize)]
 pub struct Translate(Vector3<f64>);

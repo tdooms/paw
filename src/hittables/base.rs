@@ -1,10 +1,7 @@
 use std::fmt::Debug;
 
 use nalgebra::Point3;
-use serde::{Deserialize, Serialize};
 
-use crate::hittables::Attributes;
-use crate::materials::Material;
 use crate::util::{Bounds3, Color3};
 use crate::Hit;
 

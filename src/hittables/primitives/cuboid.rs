@@ -1,4 +1,5 @@
-use nalgebra::{vector, Point3};
+use nalgebra::vector;
+
 use pawcro::primitive;
 
 #[primitive(Cube)]

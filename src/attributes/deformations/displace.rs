@@ -1,8 +1,8 @@
-use crate::attributes::Attribute;
-use nalgebra::Point3;
 use std::fmt::Debug;
 
-use crate::hittables::Hittable;
+use nalgebra::Point3;
+
+use crate::attributes::Attribute;
 
 #[derive(Clone, Copy, Debug, serde::Serialize, serde::Deserialize)]
 pub struct Displace(pub f64);

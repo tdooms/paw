@@ -34,7 +34,7 @@ impl Hittable for Scene {
         Bounds3::infinite()
     }
 
-    fn color(&self, hit: &Hit) -> Color3 {
+    fn color(&self, _hit: &Hit) -> Color3 {
         todo!()
     }
 }

@@ -1,13 +1,11 @@
 use std::fs::read_to_string;
 use std::path::Path;
 
-use nalgebra::{point, vector, Point3, UnitVector3, Vector3};
+use nalgebra::{point, Point3, UnitVector3, Vector3};
 use serde::{Deserialize, Serialize};
 
-use crate::attributes::Scale;
-use crate::hittables::{Attributes, Hittable, Scene, Sphere, Union};
+use crate::hittables::Hittable;
 use crate::lights::PointLight;
-use crate::materials::Normal;
 
 // When casting a ray, do not start at 0 to avoid colliding with the object itself
 fn start_eps() -> f64 {
@@ -154,21 +152,4 @@ pub struct Config {
 
 pub fn parse_config(path: impl AsRef<Path>) -> Result<Config, Box<dyn std::error::Error>> {
     Ok(serde_json::from_str(&read_to_string(path)?)?)
-    // Ok(Config {
-    //     march: Default::default(),
-    //     camera: Default::default(),
-    //     film: Default::default(),
-    //     world: Box::new(Sphere {
-    //         material: Box::new(Normal),
-    //         attributes: Attributes {
-    //             scale: Some(Scale(2.0)),
-    //             ..Default::default()
-    //         },
-    //     }),
-    //     lights: vec![PointLight {
-    //         position: point![4.0, 2.0, -1.0],
-    //         color: vector!(1.0, 1.0, 1.0),
-    //         softness: 8.0,
-    //     }],
-    // })
 }
