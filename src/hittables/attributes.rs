@@ -2,7 +2,9 @@ use nalgebra::Point3;
 
 use crate::attributes::*;
 
+// TODO: change this to something faster and more extensible
 #[derive(Debug, Default, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Attributes {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub elongate: Option<Elongate>,

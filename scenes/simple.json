@@ -4,7 +4,7 @@
         "height": 512
     },
     "performance": {
-        "anti_aliasing": 4,
+        "anti_aliasing": 1,
         "accelerator": "KD",
         "bounding_boxes": true
     },

@@ -1,31 +1,26 @@
-use nalgebra::{vector, Point3, Unit, Vector3};
+use nalgebra::{Point3, Unit, vector, Vector3};
 
-use crate::config::MarchParams;
+use crate::config::{MarchParams, Config};
 use crate::hittables::Hittable;
 use crate::lights::PointLight;
 use crate::ray::{Hit, Ray};
 use crate::shaders::base::Shader;
-use crate::util::{reflect, Color3};
+use crate::util::{Color3, reflect};
+use std::sync::Arc;
 
 pub struct Phong;
 
 impl Shader for Phong {
-    fn shade(
-        &self,
-        hit: &Hit,
-        eye: Point3<f64>,
-        lights: &[PointLight],
-        world: &dyn Hittable,
-        settings: &MarchParams,
-    ) -> Color3 {
+    fn shade(&self, hit: &Hit, from: Point3<f64>, config: &Config) -> Color3 {
         let ambient = vector![0.2, 0.2, 0.2];
         let diffuse = world.color(hit);
         let specular = vector![1.0, 1.0, 1.0];
         let shininess = 10.0;
 
         let mut color = ambient;
+        let eye = config.camera.look_from;
 
-        for light in lights {
+        for light in &config.lights {
             let light_dir = Unit::new_normalize(light.position - hit.surface);
             let eye_dir = Unit::new_normalize(eye - hit.surface);
             let reflected = reflect(-light_dir, hit.normal);

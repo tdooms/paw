@@ -58,6 +58,10 @@ fn fov() -> f64 {
     std::f64::consts::FRAC_PI_2
 }
 
+fn anti_aliasing() -> u32 {
+    1
+}
+
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct MarchParams {
     #[serde(default = "start_eps")]
@@ -133,6 +137,20 @@ impl Default for FilmParams {
     }
 }
 
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+pub struct PerformanceParams {
+    #[serde(default = "anti_aliasing")]
+    pub anti_aliasing: u32,
+}
+
+impl Default for PerformanceParams {
+    fn default() -> Self {
+        Self {
+            anti_aliasing: anti_aliasing()
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct Config {
     #[serde(default)]
@@ -144,12 +162,17 @@ pub struct Config {
     #[serde(default)]
     pub film: FilmParams,
 
+    #[serde(default)]
+    pub performance: PerformanceParams,
+
     pub world: Box<dyn Hittable>,
 
     #[serde(default)]
     pub lights: Vec<PointLight>,
 }
 
-pub fn parse_config(path: impl AsRef<Path>) -> Result<Config, Box<dyn std::error::Error>> {
-    Ok(serde_json::from_str(&read_to_string(path)?)?)
+impl Config {
+    pub fn parse(path: impl AsRef<Path>) -> Result<Config, Box<dyn std::error::Error>> {
+        Ok(serde_json::from_str(&read_to_string(path)?)?)
+    }
 }

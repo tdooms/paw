@@ -3,3 +3,4 @@ pub use phong::*;
 
 mod base;
 mod phong;
+mod path;

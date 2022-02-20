@@ -33,6 +33,7 @@ pub fn primitive(attr: TokenStream, input: TokenStream) -> TokenStream {
 
     let expanded = quote! {
         #[derive(Debug, serde::Serialize, serde::Deserialize)]
+        #[serde(deny_unknown_fields)]
         pub struct #name {
             #[serde(flatten)]
             attributes: crate::hittables::Attributes,

@@ -1,4 +1,4 @@
-use nalgebra::{point, vector, Point3, Vector3};
+use nalgebra::{point, Point3, vector, Vector3};
 
 pub struct Bounds3 {
     pub origin: Point3<f64>,

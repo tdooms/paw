@@ -1,0 +1,6 @@
+{
+    "type": "sphere",
+    "material": {"type": "normal"},
+    "translate": [0.2, 0.1, -0.3],
+    "scale": 1.3
+}

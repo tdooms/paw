@@ -1,11 +1,12 @@
 use nalgebra::Point3;
 
+use crate::Hit;
 use crate::hittables::{Attributes, Hittable};
 use crate::materials::Material;
 use crate::util::{Bounds3, Color3};
-use crate::Hit;
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Intersection {
     pub first: Box<dyn Hittable>,
     pub second: Box<dyn Hittable>,

@@ -4,15 +4,27 @@
         "height": 512
     },
     "performance": {
-        "anti_aliasing": 4,
+        "anti_aliasing": 1,
         "accelerator": "KD",
         "bounding_boxes": true
     },
     "world": {
         "type": "union",
         "first": {
-            "type": "cube",
-            "material": {"type": "normal"}
+            "type": "union",
+            "translate": [0.0, -0.8, 0.0],
+            "scale": 0.6,
+            "smoothness": 2.0,
+            "first": {
+                "type": "cube",
+                "material": {"type": "normal"}
+            },
+            "second": {
+                "type": "sphere",
+                "material": {"type": "normal"},
+                "translate": [-2.5, 0.0, -0.5],
+                "scale": 0.8
+            }
         },
         "second": {
             "type": "plane",

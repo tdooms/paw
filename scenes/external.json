@@ -1,0 +1,14 @@
+{
+    "world": {
+        "type": "external",
+        "path": "sphere.json"
+    },
+
+    "lights": [
+        {
+            "position": [4, 2, -1],
+            "color": [1.0, 1.0, 1.0],
+            "softness": 8
+        }
+    ]
+}

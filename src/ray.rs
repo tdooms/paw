@@ -1,6 +1,8 @@
+use std::sync::Arc;
+
 use nalgebra::{Point3, Unit, UnitVector3};
 
-use crate::config::MarchParams;
+use crate::config::{Config, MarchParams};
 use crate::hittables::Hittable;
 use crate::util::tetrahedron_normal;
 
@@ -29,17 +31,17 @@ impl Ray {
         self.origin + self.direction.scale(t)
     }
 
-    pub fn march(
-        &self,
-        world: &dyn Hittable,
-        eye: Point3<f64>,
-        settings: &MarchParams,
-    ) -> Option<Hit> {
+    pub fn color(&self, config: &Config) {
+        // self.march(config)
+    }
+
+    pub fn march(&self, config: &Config) -> Option<Hit> {
+        let settings = config.march;
         let mut depth = settings.start_eps;
 
         for _ in 0..settings.max_steps {
             let location = self.at(depth);
-            let dist = world.sdf(location);
+            let dist = config.world.sdf(location);
 
             if dist < settings.hit_eps {
                 let hit = Hit {
